@@ -1,0 +1,10 @@
+venv/
+Data/
+__pycache__/
+*.pyc
+*.h5
+*.pt
+*.pth
+.env
+.vscode/
+.DS_Store
