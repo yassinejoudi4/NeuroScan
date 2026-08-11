@@ -10,6 +10,7 @@ selon le recall.
 
 from src.training.data_loader import get_train_dataset, get_val_dataset
 from src.training.models import build_baseline_cnn, build_resnet50, build_vgg16
+import os 
 
 train_dataset = get_train_dataset()
 val_dataset = get_val_dataset()
@@ -72,3 +73,15 @@ with open("src/training/results.json", "a") as f:
     f.write(json.dumps(results_summary) + "\n")
 
 print(f"Résultats enregistrés dans src/training/results.json")
+
+os.makedirs("models", exist_ok=True)
+
+model_map = {
+    "Baseline CNN": baseline_model,
+    "ResNet50": resnet_model,
+    "VGG16": vgg_model,
+}
+
+best_model_obj = model_map[best_model]
+best_model_obj.save(f"models/best_model_{best_model.replace(' ', '_')}.keras")
+print(f"Meilleur modèle ({best_model}) enregistré dans models/")
