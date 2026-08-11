@@ -56,3 +56,19 @@ results = {
 
 best_model = max(results, key=results.get)
 print(f"\n=== Meilleur modèle selon le recall : {best_model} (recall={results[best_model]:.4f}) ===")
+
+import json
+from datetime import datetime
+
+results_summary = {
+    "date": datetime.now().isoformat(),
+    "baseline_cnn": {"accuracy": float(baseline_accuracy), "recall": float(baseline_recall)},
+    "resnet50": {"accuracy": float(resnet_accuracy), "recall": float(resnet_recall)},
+    "vgg16": {"accuracy": float(vgg_accuracy), "recall": float(vgg_recall)},
+    "best_model": best_model,
+}
+
+with open("src/training/results.json", "a") as f:
+    f.write(json.dumps(results_summary) + "\n")
+
+print(f"Résultats enregistrés dans src/training/results.json")
