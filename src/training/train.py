@@ -8,9 +8,8 @@ recall) sur le dataset de validation, et affiche le meilleur modèle
 selon le recall.
 """
 
-from src.training.data_loader import get_train_dataset, get_val_dataset
-from src.training.models import build_baseline_cnn, build_resnet50, build_vgg16
-import os 
+from data_loader import get_train_dataset, get_val_dataset
+from models import build_baseline_cnn, build_resnet50, build_vgg16
 
 train_dataset = get_train_dataset()
 val_dataset = get_val_dataset()
@@ -26,62 +25,63 @@ baseline_history = baseline_model.fit(
 baseline_loss, baseline_accuracy, baseline_recall = baseline_model.evaluate(val_dataset)
 print(f"Baseline CNN - Accuracy: {baseline_accuracy:.4f} - Recall: {baseline_recall:.4f}")
 
-# ResNet50
-print("=== Training ResNet50 ===")
-resnet_model = build_resnet50(num_classes=3)
-resnet_history = resnet_model.fit(
-    train_dataset,
-    validation_data=val_dataset,
-    epochs=10
-)
-resnet_loss, resnet_accuracy, resnet_recall = resnet_model.evaluate(val_dataset)
-print(f"ResNet50 - Accuracy: {resnet_accuracy:.4f} - Recall: {resnet_recall:.4f}")
+# # ResNet50
+# print("=== Training ResNet50 ===")
+# resnet_model = build_resnet50(num_classes=3)
+# resnet_history = resnet_model.fit(
+#     train_dataset,
+#     validation_data=val_dataset,
+#     epochs=10
+# )
+# resnet_loss, resnet_accuracy, resnet_recall = resnet_model.evaluate(val_dataset)
+# print(f"ResNet50 - Accuracy: {resnet_accuracy:.4f} - Recall: {resnet_recall:.4f}")
 
-# VGG16
-print("=== Training VGG16 ===")
-vgg_model = build_vgg16(num_classes=3)
-vgg_history = vgg_model.fit(
-    train_dataset,
-    validation_data=val_dataset,
-    epochs=10
-)
-vgg_loss, vgg_accuracy, vgg_recall = vgg_model.evaluate(val_dataset)
-print(f"VGG16 - Accuracy: {vgg_accuracy:.4f} - Recall: {vgg_recall:.4f}")
+# # VGG16
+# print("=== Training VGG16 ===")
+# vgg_model = build_vgg16(num_classes=3)
+# vgg_history = vgg_model.fit(
+#     train_dataset,
+#     validation_data=val_dataset,
+#     epochs=10
+# )
+# vgg_loss, vgg_accuracy, vgg_recall = vgg_model.evaluate(val_dataset)
+# print(f"VGG16 - Accuracy: {vgg_accuracy:.4f} - Recall: {vgg_recall:.4f}")
 
-# Comparaison finale
-results = {
-    "Baseline CNN": baseline_recall,
-    "ResNet50": resnet_recall,
-    "VGG16": vgg_recall,
-}
+# # Comparaison finale
+# results = {
+#     "Baseline CNN": baseline_recall,
+#     "ResNet50": resnet_recall,
+#     "VGG16": vgg_recall,
+# }
 
-best_model = max(results, key=results.get)
-print(f"\n=== Meilleur modèle selon le recall : {best_model} (recall={results[best_model]:.4f}) ===")
+# best_model = max(results, key=results.get)
+# print(f"\n=== Meilleur modèle selon le recall : {best_model} (recall={results[best_model]:.4f}) ===")
 
-import json
-from datetime import datetime
+# import json
+# from datetime import datetime
 
-results_summary = {
-    "date": datetime.now().isoformat(),
-    "baseline_cnn": {"accuracy": float(baseline_accuracy), "recall": float(baseline_recall)},
-    "resnet50": {"accuracy": float(resnet_accuracy), "recall": float(resnet_recall)},
-    "vgg16": {"accuracy": float(vgg_accuracy), "recall": float(vgg_recall)},
-    "best_model": best_model,
-}
+# results_summary = {
+#     "date": datetime.now().isoformat(),
+#     "baseline_cnn": {"accuracy": float(baseline_accuracy), "recall": float(baseline_recall)},
+#     "resnet50": {"accuracy": float(resnet_accuracy), "recall": float(resnet_recall)},
+#     "vgg16": {"accuracy": float(vgg_accuracy), "recall": float(vgg_recall)},
+#     "best_model": best_model,
+# }
 
-with open("src/training/results.json", "a") as f:
-    f.write(json.dumps(results_summary) + "\n")
+# with open("src/training/results.json", "a") as f:
+#     f.write(json.dumps(results_summary) + "\n")
 
-print(f"Résultats enregistrés dans src/training/results.json")
+# print(f"Résultats enregistrés dans src/training/results.json")
 
-os.makedirs("models", exist_ok=True)
+# import os
+# os.makedirs("models", exist_ok=True)
 
-model_map = {
-    "Baseline CNN": baseline_model,
-    "ResNet50": resnet_model,
-    "VGG16": vgg_model,
-}
+# model_map = {
+#     "Baseline CNN": baseline_model,
+#     "ResNet50": resnet_model,
+#     "VGG16": vgg_model,
+# }
 
-best_model_obj = model_map[best_model]
-best_model_obj.save(f"models/best_model_{best_model.replace(' ', '_')}.keras")
-print(f"Meilleur modèle ({best_model}) enregistré dans models/")
+# best_model_obj = model_map[best_model]
+baseline_model.save(f"models/best_model_{best_model.replace(' ', '_')}.keras")
+# print(f"Meilleur modèle ({best_model}) enregistré dans models/")
