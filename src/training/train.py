@@ -8,9 +8,8 @@ recall) sur le dataset de validation, et affiche le meilleur modèle
 selon le recall.
 """
 
-from src.training.data_loader import get_train_dataset, get_val_dataset
-from src.training.models import build_baseline_cnn, build_resnet50, build_vgg16
-import os 
+from data_loader import get_train_dataset, get_val_dataset
+from models import build_baseline_cnn, build_resnet50, build_vgg16
 
 train_dataset = get_train_dataset()
 val_dataset = get_val_dataset()
@@ -74,6 +73,7 @@ with open("src/training/results.json", "a") as f:
 
 print(f"Résultats enregistrés dans src/training/results.json")
 
+import os
 os.makedirs("models", exist_ok=True)
 
 model_map = {

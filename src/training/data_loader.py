@@ -44,6 +44,7 @@ def load_class_images(class_dir, label_index, augment, target_count=None):
         image = tf.io.read_file(file_path)
         image = tf.image.decode_image(image, channels=3, expand_animations=False)
         image = tf.image.resize(image, IMG_SIZE)
+        image = image / 255.0
         label = tf.one_hot(label_index, NUM_CLASSES)
         return image, label
 

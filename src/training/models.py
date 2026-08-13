@@ -32,7 +32,7 @@ def build_baseline_cnn(input_shape=(224, 224, 3), num_classes=3):
     model.compile(
         optimizer='adam',
         loss='categorical_crossentropy',
-        metrics=['accuracy']
+        metrics=['accuracy',Recall(name='recall')]
     )
 
     return model
@@ -52,7 +52,7 @@ def build_resnet50(input_shape=(224, 224, 3), num_classes=3):
     model.compile(
         optimizer='adam',
         loss='categorical_crossentropy',
-        metrics=['accuracy']
+        metrics=['accuracy',Recall(name='recall')]
     )
     return model
 
